@@ -42,14 +42,14 @@ def process_csv_to_json(input_csv):
         with open(OUTPUT_FILE, "w", encoding="utf-8") as json_file:
             json.dump(resultado, json_file, ensure_ascii=False, indent=4)
 
-        print(f"JSON gerado com sucesso em: {OUTPUT_FILE}")
+        print(f"JSON successfully generated at: {OUTPUT_FILE}")
 
     except Exception as e:
-        print(f"Erro ao processar o CSV: {e}")
+        print(f"Error processing the CSV: {e}")
 
 
 if __name__ == "__main__":
     if not os.path.exists(INPUT_FILE):
-        print(f"Erro: O arquivo de entrada '{INPUT_FILE}' não foi encontrado.")
+        print(f"Error: The input file '{INPUT_FILE}' was not found.")
     else:
         process_csv_to_json(INPUT_FILE)

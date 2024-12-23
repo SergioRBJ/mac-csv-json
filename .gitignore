@@ -1,0 +1,38 @@
+# Python-specific ignores
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter Notebook checkpoints (se for usar notebooks)
+.ipynb_checkpoints/
+
+# Environment files
+.env
+
+# Virtual environments (se decidir usar um no futuro)
+venv/
+ENV/
+env/
+
+# Logs and other system files
+*.log
+*.bak
+*.swp
+*.tmp
+*.DS_Store
+Thumbs.db
+
+# Byte-compiled files
+*.pyc
+
+# Packages
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Files folder
+output/*
+!output/.gitkeep
+input/*
+!input/.gitkeep

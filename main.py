@@ -1,55 +1,27 @@
-import pandas as pd
-import json
 import os
-from datetime import datetime
+from csv_to_json import process_csv_to_json
+from json_to_csv import process_json_to_csv
 
 INPUT_DIR = "input"
-OUTPUT_DIR = "output"
+INPUT_FILE = os.path.join(INPUT_DIR, "input")
 
-os.makedirs(INPUT_DIR, exist_ok=True)
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-INPUT_FILE = os.path.join(INPUT_DIR, "input.csv")
-timestamp = int(datetime.now().timestamp())
-OUTPUT_FILE = os.path.join(OUTPUT_DIR, f"result_{timestamp}.json")
-
-def process_csv_to_json(input_csv):
-    try:
-        df = pd.read_csv(input_csv)
-        df.columns = [col.lower() for col in df.columns]
-
-        perguntas_dict = {}
-
-        for _, row in df.iterrows():
-            pergunta = row['pergunta']
-            tipo = row['tipo']
-            genero = row['genero']
-            grupo = row['grupo']
-            peso = row['peso']
-
-            if pergunta in perguntas_dict:
-                perguntas_dict[pergunta]['grupos'].append({"grupo": grupo, "peso": peso})
-            else:
-                perguntas_dict[pergunta] = {
-                    "pergunta": pergunta,
-                    "tipo": tipo,
-                    "genero": genero,
-                    "grupos": [{"grupo": grupo, "peso": peso}]
-                }
-
-        resultado = list(perguntas_dict.values())
-
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as json_file:
-            json.dump(resultado, json_file, ensure_ascii=False, indent=4)
-
-        print(f"JSON successfully generated at: {OUTPUT_FILE}")
-
-    except Exception as e:
-        print(f"Error processing the CSV: {e}")
-
+def get_input_file():
+    for ext in ['.csv', '.json']:
+        if os.path.exists(INPUT_FILE + ext):
+            return INPUT_FILE + ext
+    return None
 
 if __name__ == "__main__":
-    if not os.path.exists(INPUT_FILE):
-        print(f"Error: The input file '{INPUT_FILE}' was not found.")
+    input_file = get_input_file()
+    
+    if not input_file:
+        print(f"Error: No input file with .csv or .json extension was found in the '{INPUT_DIR}' directory.")
     else:
-        process_csv_to_json(INPUT_FILE)
+        file_extension = os.path.splitext(input_file)[1].lower()
+        
+        if file_extension == '.csv':
+            process_csv_to_json(input_file)
+        elif file_extension == '.json':
+            process_json_to_csv(input_file)
+        else:
+            print(f"Error: Unsupported file extension '{file_extension}'. Only .csv and .json are supported.")
